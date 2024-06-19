@@ -1,10 +1,8 @@
-#Python CircleCI 2.0 configuration file
 version: 2
 jobs:
     build:
-          docker:
-                - image: circleci/classic:201808-01
-                # image: circleci/python:3.7
+          machine:
+                - image: ubuntu-2404:current
           working_directory: ~/Deploy-06182024
           steps:
           #1 Obtain repo from Github
@@ -12,14 +10,14 @@ jobs:
           #2 Create a virtual environment and install dependencies
           -run:
                 name: install dependencies
-                command:
-                python3 -m venv venv
-                . venv/bin/activate
-                pip install -r requirements.txt
+                command: |
+					python3 -m venv venv
+					. venv/bin/activate
+					pip install -r requirements.txt
             #3 Run coding convention software plus teste
             -run:
                 name: run tests
-                command:
+                command: |
                         . venv/bin/activate
                         flake8 –-exclude=venv* --statistics
                         # pytest -v --cov=calculator
@@ -28,4 +26,3 @@ jobs:
                     path: test-results
             - store_artifacts:
             path: test-results
-
